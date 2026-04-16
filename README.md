@@ -1,10 +1,27 @@
-# EMA-BEERs
+# EMA-BEERs 
 
-Introduction to course in EMA BEERs
+This seminar is a short summary of material from the [MLOps course](https://skaftenicki.github.io/dtu_mlops/latest/), which provides even more content and details.
+
+This introduction includes the following topics:
++ uv
++ cookiecutter
++ hydra
++ W&B
++ unit testing
++ CI and dependabot
++ pre-commit
++ FastAPI
++ Docs
+
+We don't cover the following here, but you can find it on the course website:
++ git (assumed to be known)
++ docker
++ DVC
++ Cloud
 
 ## Project structure
 
-The directory structure of the project looks like this:
+This structure is build after [this template](https://github.com/yahei-DTU/project-template), which is my personal preference and adaption from the course template. It has the following structure:
 ```txt
 ├── .devcontainer/            # Dev container configuration
 │   ├── devcontainer.json
