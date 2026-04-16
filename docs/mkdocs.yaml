@@ -9,6 +9,11 @@ theme:
     - content.code.copy
     - content.code.annotate
 
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+
 plugins:
   - search
   - mkdocstrings:
@@ -21,3 +26,12 @@ plugins:
 
 nav:
   - Home: index.md
+  - Content: 
+    - uv: uv.md
+    - Cookiecutter: cookiecutter.md
+    - Hydra: hydra.md
+    - Unit Testing: unit_testing.md
+    - W&B: wandb.md
+    - Pre-commit: pre-commit.md
+    - FastAPI: fastapi.md
+    - MkDocs: mkdocs.md
