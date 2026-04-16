@@ -1,4 +1,4 @@
-# EMA-BEERs 
+# [EMA-BEERs ](https://yahei-dtu.github.io/EMA-BEERs/)
 
 This seminar is a short summary of material from the [MLOps course](https://skaftenicki.github.io/dtu_mlops/latest/), which provides even more content and details. Please visit [this homepage](https://yahei-dtu.github.io/EMA-BEERs/) to find the content.
 
