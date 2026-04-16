@@ -1015,23 +1015,39 @@ uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </sp
 </code></pre></div>
 </li>
 <li>
-<p>Add some values to <code>configs/experiments/exp.yaml</code>, for example a learning rate and batch size:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">lr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.001</span>
-<span class="nt">batch_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">32</span>
-<span class="nt">epochs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<p>Add some values to <code>configs/experiments/exp.yaml</code>, for example a sample size:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">n_samples</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">200</span>
 </code></pre></div>
 </li>
 <li>
-<p>Write a short script that uses <code>@hydra.main</code> to load <code>config_dev</code> and prints the experiment settings.</p>
+<p>In <code>data.py</code>, copy the following function and complete it:</p>
+<p>The function simulates brewery hydrometer measurements. A brewer measures the sugar content of wort before and after fermentation using a hydrometer. The difference between <strong>original gravity (OG)</strong> and <strong>final gravity (FG)</strong> tells you how much sugar was converted to alcohol. The standard formula to convert that difference to <strong>alcohol by volume (ABV)</strong> is:</p>
+<div class="arithmatex">\[\text{ABV} = (\text{OG} - \text{FG}) \times 131.25\]</div>
+<p>In practice, a hydrometer reading has small measurement noise — so <code>abv</code> is the noisy measured value and <code>abv_true</code> is what the ABV actually is based on the true gravities.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_data</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">og</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">1.040</span><span class="p">,</span> <span class="mf">1.090</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>   <span class="c1"># Original gravity</span>
+    <span class="n">fg</span> <span class="o">=</span> <span class="n">og</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.008</span><span class="p">,</span> <span class="mf">0.020</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>  <span class="c1"># Final gravity (fermentation drops it)</span>
+
+    <span class="n">abv_true</span> <span class="o">=</span> <span class="p">(</span><span class="n">og</span> <span class="o">-</span> <span class="n">fg</span><span class="p">)</span> <span class="o">*</span> <span class="mf">131.25</span>
+    <span class="n">abv</span> <span class="o">=</span> <span class="n">abv_true</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>  <span class="c1"># Small measurement noise</span>
+
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;abv&quot;</span><span class="p">:</span> <span class="n">abv</span><span class="p">,</span> <span class="s2">&quot;abv_true&quot;</span><span class="p">:</span> <span class="n">abv_true</span><span class="p">})</span>
+</code></pre></div>
 </li>
+</ol>
+<p>Now write a function <code>main()</code> that uses <code>@hydra.main</code> to load <code>config_dev</code>, generates the data with <code>n_samples</code> from the experiment settings, and prints the first few rows.</p>
+<ol>
 <li>
-<p>Run the script and confirm the values are correct:</p>
-<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>src/ema_beers/train.py
+<p>Run the script and confirm the output looks reasonable (ABV values between ~3% and ~15%):</p>
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>ema_beers.data
 </code></pre></div>
 </li>
 <li>
-<p>Override the learning rate from the command line without editing any file:</p>
-<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>src/ema_beers/train.py<span class="w"> </span>experiments.lr<span class="o">=</span><span class="m">0</span>.01
+<p>Run it with a different value for <code>n_samples</code> in <code>exp.yaml</code>. You can also override the number of samples from the command line without editing any file:</p>
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>ema_beers.data<span class="w"> </span>experiments.n_samples<span class="o">=</span><span class="m">50</span>
 </code></pre></div>
 </li>
 <li>
@@ -1092,6 +1108,8 @@ uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </sp
     
     
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

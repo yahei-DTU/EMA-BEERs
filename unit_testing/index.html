@@ -1129,20 +1129,46 @@ TOTAL                          73     14    81%
 <h2 id="exercise">Exercise</h2>
 <div class="admonition example">
 <p class="admonition-title">Exercise</p>
+<p>The function <code>generate_data(n)</code> in <code>src/ema_beers/data.py</code> simulates brewery measurements. It generates random original gravity (OG) and final gravity (FG) values, computes the true ABV from those, and adds small measurement noise to produce a measured ABV. It returns a DataFrame with columns <code>abv</code> and <code>abv_true</code>.</p>
 <ol>
 <li>
-<p>Open <code>tests/test_data.py</code> and write a test for a function in <code>src/ema_beers/data.py</code>. If the function doesn't exist yet, write a simple one (e.g. a function that reads a CSV and returns a DataFrame).</p>
+<p>Open <code>tests/test_data.py</code> and write the following tests for <code>generate_data</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ema_beers.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_data</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_generate_data_returns_dataframe</span><span class="p">():</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">generate_data</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_generate_data_has_correct_columns</span><span class="p">():</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">generate_data</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="s2">&quot;abv&quot;</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+    <span class="k">assert</span> <span class="s2">&quot;abv_true&quot;</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_generate_data_correct_length</span><span class="p">():</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">generate_data</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="o">==</span> <span class="mi">50</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_generate_data_abv_in_realistic_range</span><span class="p">():</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">generate_data</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;abv_true&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</code></pre></div>
 </li>
 <li>
-<p>Run your test and confirm it passes:</p>
+<p>Run your tests and confirm they pass:</p>
 <div class="highlight"><pre><span></span><code>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/test_data.py<span class="w"> </span>-v
 </code></pre></div>
 </li>
 <li>
-<p>Deliberately break the function and run the test again — observe how pytest reports the failure.</p>
+<p>Deliberately break <code>generate_data</code> (e.g. return the wrong columns) and run the tests again — observe how pytest reports the failure.</p>
 </li>
 <li>
-<p>Fix the function, then add a second test using <code>@pytest.mark.parametrize</code> to check multiple inputs.</p>
+<p>Fix the function, then add a parametrized test to check that <code>generate_data</code> returns the right number of rows for different inputs:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">500</span><span class="p">])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_generate_data_length_parametrized</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">generate_data</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="o">==</span> <span class="n">n</span>
+</code></pre></div>
 </li>
 <li>
 <p>Run the full test suite with coverage and check the report:</p>
@@ -1208,6 +1234,8 @@ uv<span class="w"> </span>run<span class="w"> </span>coverage<span class="w"> </
     
     
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>
