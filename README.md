@@ -1,4 +1,3 @@
-````markdown
 # EMA-BEERs
 
 Introduction to course in EMA BEERs
@@ -72,5 +71,3 @@ The directory structure of the project looks like this:
 
 Template based on [mlops_template](https://github.com/SkafteNicki/mlops_template),
 a [cookiecutter template](https://github.com/cookiecutter/cookiecutter).
-
-````
