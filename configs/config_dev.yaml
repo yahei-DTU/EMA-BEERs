@@ -1,0 +1,19 @@
+defaults:
+  - datasets: data
+  - models: model
+  - experiments: exp
+  - _self_
+
+seed: 42
+
+hydra:
+  job_logging:
+    version: 1
+    root:
+      level: DEBUG
+      handlers: [console]
+  hydra_logging:
+    level: DEBUG
+
+results:
+  save_path: "reports/"
