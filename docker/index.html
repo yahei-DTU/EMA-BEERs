@@ -1,0 +1,1312 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="yahei-DTU">
+      
+      
+      
+        <link rel="prev" href="../mkdocs/">
+      
+      
+        <link rel="next" href="../fastapi/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Docker - EMA-BEERs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#containerisation-with-docker" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="EMA-BEERs" class="md-header__button md-logo" aria-label="EMA-BEERs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            EMA-BEERs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Docker
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="EMA-BEERs" class="md-nav__button md-logo" aria-label="EMA-BEERs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    EMA-BEERs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Content
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Content
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uv/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    uv
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cookiecutter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cookiecutter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hydra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hydra
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../unit_testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit Testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wandb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    W&B
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CI/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CI and Dependabot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pre-commit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pre-commit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mkdocs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MkDocs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extras
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Extras
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is Docker?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installing Docker
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dockerfile-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dockerfile Basics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dockerfiles-in-this-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dockerfiles in This Project
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dockerfiles in This Project">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#traindockerfile-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        train.dockerfile — Training
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apidockerfile-api-serving" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        api.dockerfile — API Serving
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-and-running" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building and Running
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#layer-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Layer Caching
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dev-containers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dev Containers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dev Containers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#devcontainerjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        devcontainer.json
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post_createsh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        post_create.sh
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opening-the-dev-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opening the Dev Container
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fastapi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FastAPI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is Docker?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installing Docker
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dockerfile-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dockerfile Basics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dockerfiles-in-this-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dockerfiles in This Project
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dockerfiles in This Project">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#traindockerfile-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        train.dockerfile — Training
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apidockerfile-api-serving" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        api.dockerfile — API Serving
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-and-running" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building and Running
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#layer-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Layer Caching
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dev-containers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dev Containers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dev Containers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#devcontainerjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        devcontainer.json
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post_createsh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        post_create.sh
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opening-the-dev-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opening the Dev Container
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="containerisation-with-docker">Containerisation with Docker</h1>
+<p>A common problem when sharing code is: <em>"it works on my machine"</em>. Different operating systems, Python versions, and installed packages mean that code working locally may fail on someone else's machine or on a server. <strong>Docker</strong> solves this by packaging your code together with everything it needs to run into a single, portable unit called a <strong>container</strong>.</p>
+<h2 id="what-is-docker">What is Docker?</h2>
+<p>A Docker <strong>container</strong> is a lightweight, isolated environment that runs the same way on any machine. Think of it as a stripped-down virtual machine — it has its own filesystem, its own Python installation, and its own dependencies — but it shares the host machine's kernel, making it much faster and smaller than a full VM.</p>
+<p>A container is built from an <strong>image</strong>, which is defined by a <strong>Dockerfile</strong> — a text file with step-by-step instructions for assembling the environment.</p>
+<h2 id="installing-docker">Installing Docker</h2>
+<p>Download and install Docker Desktop from <a href="https://docs.docker.com/get-docker/">docs.docker.com/get-docker</a>. Once installed, verify it works:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>--version
+</code></pre></div>
+<h2 id="dockerfile-basics">Dockerfile Basics</h2>
+<p>A Dockerfile is a recipe for building an image. Each line is an instruction:</p>
+<div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">python:3.12-slim</span><span class="w">          </span><span class="c"># start from an official Python image</span>
+
+<span class="k">WORKDIR</span><span class="w"> </span><span class="s">/app                   # set the working directory inside the container</span>
+
+<span class="k">COPY</span><span class="w"> </span>pyproject.toml<span class="w"> </span>.<span class="w">          </span>#<span class="w"> </span>copy<span class="w"> </span>files<span class="w"> </span>into<span class="w"> </span>the<span class="w"> </span>container
+<span class="k">COPY</span><span class="w"> </span>src<span class="w"> </span>src/
+
+<span class="k">RUN</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>.<span class="w">              </span>#<span class="w"> </span>run<span class="w"> </span>commands<span class="w"> </span>to<span class="w"> </span>install<span class="w"> </span>dependencies
+
+<span class="k">ENTRYPOINT</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;python&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;src/my_project/train.py&quot;</span><span class="p">]</span><span class="w">  </span>#<span class="w"> </span><span class="nb">command</span><span class="w"> </span>to<span class="w"> </span>run<span class="w"> </span>when<span class="w"> </span>the<span class="w"> </span>container<span class="w"> </span>starts
+</code></pre></div>
+<p>The key instructions are:</p>
+<table>
+<thead>
+<tr>
+<th>Instruction</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FROM</code></td>
+<td>Base image to build on top of</td>
+</tr>
+<tr>
+<td><code>WORKDIR</code></td>
+<td>Sets the working directory for subsequent commands</td>
+</tr>
+<tr>
+<td><code>COPY</code></td>
+<td>Copies files from your machine into the image</td>
+</tr>
+<tr>
+<td><code>RUN</code></td>
+<td>Executes a shell command during the build</td>
+</tr>
+<tr>
+<td><code>ENTRYPOINT</code></td>
+<td>The command that runs when the container starts</td>
+</tr>
+</tbody>
+</table>
+<h2 id="dockerfiles-in-this-project">Dockerfiles in This Project</h2>
+<p>The project has two Dockerfiles in <code>dockerfiles/</code>:</p>
+<h3 id="traindockerfile-training">train.dockerfile — Training</h3>
+<p>Builds an image for running the training script:</p>
+<div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">ghcr.io/astral-sh/uv:python3.12-alpine</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">base</span>
+
+<span class="k">COPY</span><span class="w"> </span>uv.lock<span class="w"> </span>uv.lock
+<span class="k">COPY</span><span class="w"> </span>pyproject.toml<span class="w"> </span>pyproject.toml
+
+<span class="k">RUN</span><span class="w"> </span>uv<span class="w"> </span>sync<span class="w"> </span>--frozen<span class="w"> </span>--no-install-project
+
+<span class="k">COPY</span><span class="w"> </span>src<span class="w"> </span>src/
+<span class="k">COPY</span><span class="w"> </span>README.md<span class="w"> </span>README.md
+<span class="k">COPY</span><span class="w"> </span>LICENSE<span class="w"> </span>LICENSE
+
+<span class="k">RUN</span><span class="w"> </span>uv<span class="w"> </span>sync<span class="w"> </span>--frozen
+
+<span class="k">ENTRYPOINT</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;uv&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;run&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;src/ema_beers/train.py&quot;</span><span class="p">]</span>
+</code></pre></div>
+<p>It uses the official <code>uv</code> base image and installs dependencies in two stages: first the dependencies alone (so Docker can cache this layer), then the project source. This means rebuilding after a code change does not re-download all packages.</p>
+<h3 id="apidockerfile-api-serving">api.dockerfile — API Serving</h3>
+<p>Builds an image for running the FastAPI server:</p>
+<div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">ghcr.io/astral-sh/uv:python3.12-alpine</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">base</span>
+
+<span class="k">COPY</span><span class="w"> </span>uv.lock<span class="w"> </span>uv.lock
+<span class="k">COPY</span><span class="w"> </span>pyproject.toml<span class="w"> </span>pyproject.toml
+
+<span class="k">RUN</span><span class="w"> </span>uv<span class="w"> </span>sync<span class="w"> </span>--frozen<span class="w"> </span>--no-install-project
+
+<span class="k">COPY</span><span class="w"> </span>src<span class="w"> </span>src/
+<span class="k">COPY</span><span class="w"> </span>README.md<span class="w"> </span>README.md
+<span class="k">COPY</span><span class="w"> </span>LICENSE<span class="w"> </span>LICENSE
+
+<span class="k">RUN</span><span class="w"> </span>uv<span class="w"> </span>sync<span class="w"> </span>--frozen
+
+<span class="k">ENTRYPOINT</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;uv&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;run&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;uvicorn&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;src.ema_beers.api:app&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--host&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--port&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;8000&quot;</span><span class="p">]</span>
+</code></pre></div>
+<p>The only difference from the training image is the <code>ENTRYPOINT</code> — it starts the uvicorn web server instead of the training script.</p>
+<h2 id="building-and-running">Building and Running</h2>
+<p><strong>Build an image:</strong></p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>build<span class="w"> </span>-f<span class="w"> </span>dockerfiles/train.dockerfile<span class="w"> </span>-t<span class="w"> </span>ema-beers-train<span class="w"> </span>.
+</code></pre></div>
+<ul>
+<li><code>-f</code> specifies which Dockerfile to use</li>
+<li><code>-t</code> gives the image a name (tag)</li>
+<li><code>.</code> is the <strong>build context</strong> — the directory Docker has access to when copying files</li>
+</ul>
+<p><strong>Run the training container:</strong></p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>ema-beers-train
+</code></pre></div>
+<p><strong>Run the API container and expose its port:</strong></p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>build<span class="w"> </span>-f<span class="w"> </span>dockerfiles/api.dockerfile<span class="w"> </span>-t<span class="w"> </span>ema-beers-api<span class="w"> </span>.
+docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span>ema-beers-api
+</code></pre></div>
+<p><code>-p 8000:8000</code> maps port 8000 inside the container to port 8000 on your machine, so you can reach the API at <code>http://localhost:8000</code>.</p>
+<h2 id="layer-caching">Layer Caching</h2>
+<p>Docker builds images layer by layer, and <strong>caches each layer</strong>. If a layer has not changed since the last build, Docker reuses the cached version instead of rebuilding it. This is why the Dockerfiles copy <code>pyproject.toml</code> and run <code>uv sync</code> before copying the source code:</p>
+<div class="highlight"><pre><span></span><code><span class="c"># These layers are cached as long as pyproject.toml/uv.lock don&#39;t change</span>
+<span class="k">COPY</span><span class="w"> </span>uv.lock<span class="w"> </span>uv.lock
+<span class="k">COPY</span><span class="w"> </span>pyproject.toml<span class="w"> </span>pyproject.toml
+<span class="k">RUN</span><span class="w"> </span>uv<span class="w"> </span>sync<span class="w"> </span>--frozen<span class="w"> </span>--no-install-project
+
+<span class="c"># Only this layer is rebuilt when you change source code</span>
+<span class="k">COPY</span><span class="w"> </span>src<span class="w"> </span>src/
+<span class="k">RUN</span><span class="w"> </span>uv<span class="w"> </span>sync<span class="w"> </span>--frozen
+</code></pre></div>
+<p>If you copy the source first and then install dependencies, every code change would trigger a full re-install of all packages — which can take minutes.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The build context (<code>.</code>) is sent to the Docker daemon on every build. Add a <code>.dockerignore</code> file to exclude large directories like <code>.venv</code>, <code>data/</code>, <code>models/</code>, and <code>outputs/</code> from being copied, which speeds up builds significantly.</p>
+</div>
+<h2 id="dev-containers">Dev Containers</h2>
+<p>The Dockerfiles above are for running training and the API. There is a second Docker-based workflow for <strong>development itself</strong>: the dev container.</p>
+<p>A <strong>dev container</strong> is a Docker container that your editor runs inside of. Instead of installing Python, uv, and extensions locally, you open the project in a container that already has everything set up. The experience feels identical to working locally — you edit files, run tests, use the terminal — but the environment is defined in code and identical for everyone on the team.</p>
+<p>This project's dev container is configured in <code>.devcontainer/</code>:</p>
+<div class="highlight"><pre><span></span><code>.devcontainer/
+    devcontainer.json     &lt;- tells VS Code how to build and use the container
+    post_create.sh        &lt;- runs once after the container is created
+</code></pre></div>
+<h3 id="devcontainerjson">devcontainer.json</h3>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;devcontainer&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;dockerFile&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;devcontainer.dockerfile&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;postCreateCommand&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bash .devcontainer/post_create.sh&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;customizations&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;vscode&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;extensions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;ms-python.python&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;ms-python.vscode-pylance&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;charliermarsh.ruff&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;eamodio.gitlens&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;github.copilot&quot;</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><code>dockerFile</code> — the Dockerfile used to build the development environment</li>
+<li><code>postCreateCommand</code> — a script that runs once after the container is first created</li>
+<li><code>customizations.vscode.extensions</code> — VS Code extensions that are automatically installed inside the container</li>
+</ul>
+<h3 id="post_createsh">post_create.sh</h3>
+<p>This script runs automatically after the container is created:</p>
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>sync<span class="w"> </span>--locked<span class="w">          </span><span class="c1"># install all dependencies</span>
+uv<span class="w"> </span>run<span class="w"> </span>pre-commit<span class="w"> </span>install<span class="w"> </span><span class="c1"># install git hooks</span>
+</code></pre></div>
+<p>By the time the container is ready, the full environment is set up — dependencies installed, hooks active — without any manual steps.</p>
+<h3 id="opening-the-dev-container">Opening the Dev Container</h3>
+<p>You need <strong>VS Code</strong> with the <strong>Dev Containers</strong> extension installed. Then:</p>
+<ol>
+<li>Open the project folder in VS Code</li>
+<li>When prompted <em>"Reopen in Container"</em>, click it — or open the Command Palette (<code>Ctrl+Shift+P</code>) and run <strong>Dev Containers: Reopen in Container</strong></li>
+<li>VS Code builds the image (first time only) and reopens inside the container</li>
+<li><code>post_create.sh</code> runs automatically</li>
+</ol>
+<p>From this point your terminal, Python interpreter, and extensions all run inside the container. Anyone cloning the repo and opening it in VS Code gets an identical environment.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The dev container is for development — editing code, running tests, using the terminal. The <code>train.dockerfile</code> and <code>api.dockerfile</code> are for production use: packaging the training job or the API for deployment.</p>
+</div>
+<h2 id="exercise">Exercise</h2>
+<div class="admonition example">
+<p class="admonition-title">Exercise</p>
+<ol>
+<li>
+<p>Install Docker Desktop and verify it is running:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>--version
+</code></pre></div>
+</li>
+<li>
+<p>Build the training image:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>build<span class="w"> </span>-f<span class="w"> </span>dockerfiles/train.dockerfile<span class="w"> </span>-t<span class="w"> </span>ema-beers-train<span class="w"> </span>.
+</code></pre></div>
+</li>
+<li>
+<p>Run the training container and observe the output:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>ema-beers-train
+</code></pre></div>
+</li>
+<li>
+<p>Build and run the API image, then open <code>http://localhost:8000/docs</code> in your browser:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>build<span class="w"> </span>-f<span class="w"> </span>dockerfiles/api.dockerfile<span class="w"> </span>-t<span class="w"> </span>ema-beers-api<span class="w"> </span>.
+docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span>ema-beers-api
+</code></pre></div>
+</li>
+<li>
+<p>Make a small change to <code>src/ema_beers/train.py</code> and rebuild the training image. Notice which layers are rebuilt and which are served from cache.</p>
+</li>
+<li>
+<p><strong>Bonus:</strong> create a <code>.dockerignore</code> file that excludes <code>.venv/</code>, <code>data/</code>, <code>models/</code>, and <code>outputs/</code>, then rebuild and compare the build time.</p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
