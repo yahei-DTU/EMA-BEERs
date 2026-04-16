@@ -3,7 +3,7 @@ requires = ["uv_build>=0.9.22,<0.10.0"]
 build-backend = "uv_build"
 
 [project]
-name = "EMA-BEERs"
+name = "ema_beers"
 version = "0.0.1"
 description = "Introduction to course in EMA BEERs"
 authors = [

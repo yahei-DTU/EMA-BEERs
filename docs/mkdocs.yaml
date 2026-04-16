@@ -8,6 +8,15 @@ theme:
   features:
     - content.code.copy
     - content.code.annotate
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
 
 markdown_extensions:
   - admonition
@@ -32,6 +41,9 @@ nav:
     - Hydra: hydra.md
     - Unit Testing: unit_testing.md
     - W&B: wandb.md
+    - CI and Dependabot: CI.md
     - Pre-commit: pre-commit.md
-    - FastAPI: fastapi.md
     - MkDocs: mkdocs.md
+  - Extras:
+    - Docker: docker.md
+    - FastAPI: fastapi.md
