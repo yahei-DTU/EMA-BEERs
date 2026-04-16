@@ -142,16 +142,16 @@ If you find yourself tweaking the generated output the same way every time, cons
         uv sync
         ```
 
-    4. Add a new package to the project — for example, scipy:
+    4. Add a new package to the project — for example, sklearn:
 
         ```bash
-        uv add scipy
+        uv add sklearn
         ```
 
     5. Verify the install worked by running a quick check:
 
         ```bash
-        uv run python -c "import scipy; print(scipy.__version__)"
+        uv run python -c "import sklearn; print(sklearn.__version__)"
         ```
 
-    6. Open `pyproject.toml` and confirm that `scipy` now appears in the `dependencies` list.
+    6. Open `pyproject.toml` and confirm that `sklearn` now appears in the `dependencies` list.

@@ -156,10 +156,52 @@ This is particularly useful when combined with Hydra's `--multirun` flag — you
         uv add wandb
         ```
 
-    3. Add `wandb.init` and `wandb.log` to `src/ema_beers/train.py`. Log at least the training loss per epoch.
+    3. In `src/ema_beers/data.py`, extend the `main()` function you wrote in the Hydra exercise to initialise a W&B run and log summary statistics of the generated dataset:
 
-    4. Run training and follow the link printed in the terminal to see your run in the dashboard.
+        ```python
+        import wandb
+        from dotenv import load_dotenv
 
-    5. Run training a second time with a different learning rate and compare the two runs in the W&B UI.
+        load_dotenv()
 
-    6. **Bonus:** pass the full Hydra config to `wandb.init` using `OmegaConf.to_container` so every run is fully reproducible from the dashboard.
+        wandb.init(config=OmegaConf.to_container(cfg, resolve=True))
+
+        df = generate_data(cfg.experiments.n_samples)
+
+        wandb.log({
+            "n_samples": len(df),
+            "abv_mean": df["abv"].mean(),
+            "abv_std": df["abv"].std(),
+            "noise_mean": (df["abv"] - df["abv_true"]).mean(),
+            "noise_std": (df["abv"] - df["abv_true"]).std(),
+        })
+
+        wandb.finish()
+        ```
+
+    4. Run the script and follow the link printed in the terminal to see your run in the dashboard:
+
+        ```bash
+        uv run python -m ema_beers.data
+        ```
+
+    5. Run it again with a different `n_samples` and compare the two runs in the W&B UI:
+
+        ```bash
+        uv run python -m ema_beers.data experiments.n_samples=500
+        ```
+
+    6. **Bonus:** log a scatter plot of measured vs. true ABV as a W&B figure so you can visually inspect the noise across runs:
+
+        ```python
+        import matplotlib.pyplot as plt
+
+        fig, ax = plt.subplots()
+        ax.scatter(df["abv_true"], df["abv"], alpha=0.4, s=10)
+        ax.plot([df["abv_true"].min(), df["abv_true"].max()],
+                [df["abv_true"].min(), df["abv_true"].max()], "r--")
+        ax.set_xlabel("True ABV")
+        ax.set_ylabel("Measured ABV")
+        wandb.log({"abv_scatter": wandb.Image(fig)})
+        plt.close(fig)
+        ```

@@ -139,26 +139,46 @@ This makes every experiment fully reproducible: you can always look up exactly w
         uv add hydra-core
         ```
 
-    2. Add some values to `configs/experiments/exp.yaml`, for example a learning rate and batch size:
+    2. Add some values to `configs/experiments/exp.yaml`, for example a sample size:
 
         ```yaml
-        lr: 0.001
-        batch_size: 32
-        epochs: 10
+        n_samples: 200
         ```
 
-    3. Write a short script that uses `@hydra.main` to load `config_dev` and prints the experiment settings.
+    3. In `data.py`, copy the following function and complete it:
 
-    4. Run the script and confirm the values are correct:
+        The function simulates brewery hydrometer measurements. A brewer measures the sugar content of wort before and after fermentation using a hydrometer. The difference between **original gravity (OG)** and **final gravity (FG)** tells you how much sugar was converted to alcohol. The standard formula to convert that difference to **alcohol by volume (ABV)** is:
 
-        ```bash
-        uv run python src/ema_beers/train.py
+        $$\text{ABV} = (\text{OG} - \text{FG}) \times 131.25$$
+
+        In practice, a hydrometer reading has small measurement noise — so `abv` is the noisy measured value and `abv_true` is what the ABV actually is based on the true gravities.
+    
+        ```python
+        import numpy as np
+        import pandas as pd
+
+        def generate_data(n):
+            og = np.random.uniform(1.040, 1.090, n)   # Original gravity
+            fg = og - np.random.uniform(0.008, 0.020, n)  # Final gravity (fermentation drops it)
+
+            abv_true = (og - fg) * 131.25
+            abv = abv_true + np.random.normal(0, 0.15, n)  # Small measurement noise
+
+            return pd.DataFrame({"abv": abv, "abv_true": abv_true})
         ```
 
-    5. Override the learning rate from the command line without editing any file:
+    Now write a function `main()` that uses `@hydra.main` to load `config_dev`, generates the data with `n_samples` from the experiment settings, and prints the first few rows.
+
+    4. Run the script and confirm the output looks reasonable (ABV values between ~3% and ~15%):
 
         ```bash
-        uv run python src/ema_beers/train.py experiments.lr=0.01
+        uv run python -m ema_beers.data
+        ```
+
+    5. Run it with a different value for `n_samples` in `exp.yaml`. You can also override the number of samples from the command line without editing any file:
+
+        ```bash
+        uv run python -m ema_beers.data experiments.n_samples=50
         ```
 
     6. Check the `outputs/` directory and inspect the saved `.hydra/config.yaml` to see the full resolved config.

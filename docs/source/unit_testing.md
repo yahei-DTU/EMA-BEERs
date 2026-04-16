@@ -198,17 +198,48 @@ This creates a `htmlcov/` directory. Open `htmlcov/index.html` in a browser to s
 ## Exercise
 
 !!! example "Exercise"
-    1. Open `tests/test_data.py` and write a test for a function in `src/ema_beers/data.py`. If the function doesn't exist yet, write a simple one (e.g. a function that reads a CSV and returns a DataFrame).
+    The function `generate_data(n)` in `src/ema_beers/data.py` simulates brewery measurements. It generates random original gravity (OG) and final gravity (FG) values, computes the true ABV from those, and adds small measurement noise to produce a measured ABV. It returns a DataFrame with columns `abv` and `abv_true`.
 
-    2. Run your test and confirm it passes:
+    1. Open `tests/test_data.py` and write the following tests for `generate_data`:
+
+        ```python
+        import pandas as pd
+        from ema_beers.data import generate_data
+
+        def test_generate_data_returns_dataframe():
+            df = generate_data(10)
+            assert isinstance(df, pd.DataFrame)
+
+        def test_generate_data_has_correct_columns():
+            df = generate_data(10)
+            assert "abv" in df.columns
+            assert "abv_true" in df.columns
+
+        def test_generate_data_correct_length():
+            df = generate_data(50)
+            assert len(df) == 50
+
+        def test_generate_data_abv_in_realistic_range():
+            df = generate_data(200)
+            assert df["abv_true"].between(1.0, 20.0).all()
+        ```
+
+    2. Run your tests and confirm they pass:
 
         ```bash
         uv run pytest tests/test_data.py -v
         ```
 
-    3. Deliberately break the function and run the test again — observe how pytest reports the failure.
+    3. Deliberately break `generate_data` (e.g. return the wrong columns) and run the tests again — observe how pytest reports the failure.
 
-    4. Fix the function, then add a second test using `@pytest.mark.parametrize` to check multiple inputs.
+    4. Fix the function, then add a parametrized test to check that `generate_data` returns the right number of rows for different inputs:
+
+        ```python
+        @pytest.mark.parametrize("n", [1, 10, 100, 500])
+        def test_generate_data_length_parametrized(n):
+            df = generate_data(n)
+            assert len(df) == n
+        ```
 
     5. Run the full test suite with coverage and check the report:
 
