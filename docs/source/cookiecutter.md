@@ -86,6 +86,110 @@ cd my-ml-project
 uv sync
 ```
 
+## Starting a New Project and Repository
+
+The generated folder is not yet a git repository and isn't on GitHub. A common question is whether to create the GitHub repository first or run cookiecutter first.
+
+**Run cookiecutter first, then create an empty repository on GitHub and push to it.** This order avoids two common problems:
+
+- Cookiecutter always creates a *new* folder. If you clone a GitHub repo first and run cookiecutter inside it, you end up with the project nested one level too deep (`my-ml-project/my-ml-project/`).
+- If the GitHub repo already has a README, `.gitignore` or license, it has its own history that conflicts with the files the template generates.
+
+The full workflow is: **cookiecutter → `git init` + first commit → create empty GitHub repo → `git remote add` + `git push`**.
+
+### 1. Generate the project locally
+
+```bash
+cookiecutter https://github.com/yahei-DTU/project-template
+cd my-ml-project
+uv sync
+```
+
+Running `uv sync` before the first commit creates `uv.lock`, so the lock file is included from the start.
+
+### 2. Turn the folder into a git repository
+
+```bash
+git init -b main
+git add .
+git commit -m "Initial commit from project template"
+```
+
+`git init -b main` creates the repository with `main` as the default branch, matching GitHub's default. The template's `.gitignore` already excludes `.venv/`, `.env` and other files that should not be committed, so `git add .` is safe.
+
+### 3. Create an empty repository on GitHub
+
+1. Go to [github.com/new](https://github.com/new).
+2. Choose the owner (your account or an organization) and use the same name as your local folder, e.g. `my-ml-project`.
+3. Choose *Public* or *Private*.
+4. **Leave everything under "Initialize this repository with" unticked**: no README, no `.gitignore`, no license. The template already provides all of these.
+5. Click *Create repository*.
+
+### 4. Connect the local repository to GitHub and push
+
+GitHub shows the commands on the page of your new empty repository. They boil down to:
+
+```bash
+git remote add origin https://github.com/<your-username>/my-ml-project.git
+git push -u origin main
+```
+
+- `git remote add origin <url>` tells your local repository where the remote lives. `origin` is the conventional name for the main remote.
+- `git push -u origin main` uploads your commits and sets `origin/main` as the upstream of your local `main`. From then on, a plain `git push` and `git pull` are enough.
+
+Check the connection with:
+
+```bash
+git remote -v
+```
+
+Refresh the GitHub page and your project should be there.
+
+!!! note "Authentication"
+    GitHub no longer accepts your account password for `git push` over HTTPS. The easiest fix is to install the
+    [GitHub CLI](https://cli.github.com/) and run `gh auth login` once, which also configures git to use your
+    GitHub credentials. Alternatively, set up an [SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh)
+    and use the SSH URL instead: `git@github.com:<your-username>/my-ml-project.git`.
+
+### Shortcut: steps 3 and 4 with the GitHub CLI
+
+If you have the GitHub CLI installed and logged in, you can create the remote repository, connect it and push in a single command from inside your project folder (after step 2):
+
+```bash
+gh repo create my-ml-project --private --source=. --remote=origin --push
+```
+
+Use `--public` instead of `--private` for a public repository.
+
+### Already created the GitHub repository first?
+
+??? question "I created the repo on GitHub with a README (or .gitignore/license) and now `git push` is rejected"
+    The remote has a commit your local repository doesn't know about. If you haven't done anything in the GitHub repo
+    yet, the simplest fix is to delete it and create it again *empty*. Otherwise, merge the two histories once and keep
+    the template's versions of any conflicting files:
+
+    ```bash
+    git pull origin main --allow-unrelated-histories
+    # resolve any conflicts (e.g. README.md, .gitignore), then:
+    git add .
+    git commit
+    git push -u origin main
+    ```
+
+??? question "I already cloned the GitHub repo and want to fill it with the template"
+    Run cookiecutter from the folder *containing* the clone, give `repo_name` exactly the same name as the cloned folder,
+    and pass `-f` (`--overwrite-if-exists`) so cookiecutter writes into the existing folder instead of failing:
+
+    ```bash
+    cookiecutter -f https://github.com/yahei-DTU/project-template
+    cd my-ml-project
+    git add .
+    git commit -m "Add project template"
+    git push
+    ```
+
+    Files with the same name, such as a README created by GitHub, are overwritten by the template's version.
+
 ## How Templates Work
 
 A cookiecutter template is a repository with two key components:
@@ -142,16 +246,27 @@ If you find yourself tweaking the generated output the same way every time, cons
         uv sync
         ```
 
-    4. Add a new package to the project — for example, sklearn:
+    4. Put the project under version control and push it to a new, empty GitHub repository, following
+        [Starting a New Project and Repository](#starting-a-new-project-and-repository).
+
+    5. Add a new package to the project — for example, scikit-learn:
 
         ```bash
-        uv add sklearn
+        uv add scikit-learn
         ```
 
-    5. Verify the install worked by running a quick check:
+    6. Verify the install worked by running a quick check:
 
         ```bash
         uv run python -c "import sklearn; print(sklearn.__version__)"
         ```
 
-    6. Open `pyproject.toml` and confirm that `sklearn` now appears in the `dependencies` list.
+    7. Open `pyproject.toml` and confirm that `scikit-learn` now appears in the `dependencies` list.
+
+    8. Commit the change and push it to GitHub:
+
+        ```bash
+        git add pyproject.toml uv.lock
+        git commit -m "Add scikit-learn"
+        git push
+        ```
