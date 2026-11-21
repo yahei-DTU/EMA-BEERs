@@ -39,8 +39,8 @@ cookiecutter https://github.com/yahei-DTU/project-template
 You will be prompted to fill in the following fields:
 
 ```
-repo_name [repo_name]: my-ml-project
-project_name [project_name]: My ML Project
+repo_name [repo-name]: my-ml-project
+project_name [package_name]: my_ml_package
 author_name [Your name (or your organization/company/team)]: Jane Doe
 author_email [Your email address]: jane@example.com
 description [A short description of the project.]: Predicting bike rentals with regression
