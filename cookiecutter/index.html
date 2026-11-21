@@ -450,6 +450,89 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#starting-a-new-project-and-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Starting a New Project and Repository
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Starting a New Project and Repository">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-generate-the-project-locally" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Generate the project locally
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-turn-the-folder-into-a-git-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Turn the folder into a git repository
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-create-an-empty-repository-on-github" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Create an empty repository on GitHub
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-connect-the-local-repository-to-github-and-push" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Connect the local repository to GitHub and push
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shortcut-steps-3-and-4-with-the-github-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shortcut: steps 3 and 4 with the GitHub CLI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#already-created-the-github-repository-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Already created the GitHub repository first?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#how-templates-work" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -842,6 +925,89 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#starting-a-new-project-and-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Starting a New Project and Repository
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Starting a New Project and Repository">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-generate-the-project-locally" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Generate the project locally
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-turn-the-folder-into-a-git-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Turn the folder into a git repository
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-create-an-empty-repository-on-github" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Create an empty repository on GitHub
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-connect-the-local-repository-to-github-and-push" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Connect the local repository to GitHub and push
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shortcut-steps-3-and-4-with-the-github-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shortcut: steps 3 and 4 with the GitHub CLI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#already-created-the-github-repository-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Already created the GitHub repository first?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#how-templates-work" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -940,6 +1106,84 @@ Choose from 1, 2, 3 [1]: 2
 <div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>my-ml-project
 uv<span class="w"> </span>sync
 </code></pre></div>
+<h2 id="starting-a-new-project-and-repository">Starting a New Project and Repository</h2>
+<p>The generated folder is not yet a git repository and isn't on GitHub. A common question is whether to create the GitHub repository first or run cookiecutter first.</p>
+<p><strong>Run cookiecutter first, then create an empty repository on GitHub and push to it.</strong> This order avoids two common problems:</p>
+<ul>
+<li>Cookiecutter always creates a <em>new</em> folder. If you clone a GitHub repo first and run cookiecutter inside it, you end up with the project nested one level too deep (<code>my-ml-project/my-ml-project/</code>).</li>
+<li>If the GitHub repo already has a README, <code>.gitignore</code> or license, it has its own history that conflicts with the files the template generates.</li>
+</ul>
+<p>The full workflow is: <strong>cookiecutter → <code>git init</code> + first commit → create empty GitHub repo → <code>git remote add</code> + <code>git push</code></strong>.</p>
+<h3 id="1-generate-the-project-locally">1. Generate the project locally</h3>
+<div class="highlight"><pre><span></span><code>cookiecutter<span class="w"> </span>https://github.com/yahei-DTU/project-template
+<span class="nb">cd</span><span class="w"> </span>my-ml-project
+uv<span class="w"> </span>sync
+</code></pre></div>
+<p>Running <code>uv sync</code> before the first commit creates <code>uv.lock</code>, so the lock file is included from the start.</p>
+<h3 id="2-turn-the-folder-into-a-git-repository">2. Turn the folder into a git repository</h3>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>init<span class="w"> </span>-b<span class="w"> </span>main
+git<span class="w"> </span>add<span class="w"> </span>.
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Initial commit from project template&quot;</span>
+</code></pre></div>
+<p><code>git init -b main</code> creates the repository with <code>main</code> as the default branch, matching GitHub's default. The template's <code>.gitignore</code> already excludes <code>.venv/</code>, <code>.env</code> and other files that should not be committed, so <code>git add .</code> is safe.</p>
+<h3 id="3-create-an-empty-repository-on-github">3. Create an empty repository on GitHub</h3>
+<ol>
+<li>Go to <a href="https://github.com/new">github.com/new</a>.</li>
+<li>Choose the owner (your account or an organization) and use the same name as your local folder, e.g. <code>my-ml-project</code>.</li>
+<li>Choose <em>Public</em> or <em>Private</em>.</li>
+<li><strong>Leave everything under "Initialize this repository with" unticked</strong>: no README, no <code>.gitignore</code>, no license. The template already provides all of these.</li>
+<li>Click <em>Create repository</em>.</li>
+</ol>
+<h3 id="4-connect-the-local-repository-to-github-and-push">4. Connect the local repository to GitHub and push</h3>
+<p>GitHub shows the commands on the page of your new empty repository. They boil down to:</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </span>origin<span class="w"> </span>https://github.com/&lt;your-username&gt;/my-ml-project.git
+git<span class="w"> </span>push<span class="w"> </span>-u<span class="w"> </span>origin<span class="w"> </span>main
+</code></pre></div>
+<ul>
+<li><code>git remote add origin &lt;url&gt;</code> tells your local repository where the remote lives. <code>origin</code> is the conventional name for the main remote.</li>
+<li><code>git push -u origin main</code> uploads your commits and sets <code>origin/main</code> as the upstream of your local <code>main</code>. From then on, a plain <code>git push</code> and <code>git pull</code> are enough.</li>
+</ul>
+<p>Check the connection with:</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>remote<span class="w"> </span>-v
+</code></pre></div>
+<p>Refresh the GitHub page and your project should be there.</p>
+<div class="admonition note">
+<p class="admonition-title">Authentication</p>
+<p>GitHub no longer accepts your account password for <code>git push</code> over HTTPS. The easiest fix is to install the
+<a href="https://cli.github.com/">GitHub CLI</a> and run <code>gh auth login</code> once, which also configures git to use your
+GitHub credentials. Alternatively, set up an <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh">SSH key</a>
+and use the SSH URL instead: <code>git@github.com:&lt;your-username&gt;/my-ml-project.git</code>.</p>
+</div>
+<h3 id="shortcut-steps-3-and-4-with-the-github-cli">Shortcut: steps 3 and 4 with the GitHub CLI</h3>
+<p>If you have the GitHub CLI installed and logged in, you can create the remote repository, connect it and push in a single command from inside your project folder (after step 2):</p>
+<div class="highlight"><pre><span></span><code>gh<span class="w"> </span>repo<span class="w"> </span>create<span class="w"> </span>my-ml-project<span class="w"> </span>--private<span class="w"> </span>--source<span class="o">=</span>.<span class="w"> </span>--remote<span class="o">=</span>origin<span class="w"> </span>--push
+</code></pre></div>
+<p>Use <code>--public</code> instead of <code>--private</code> for a public repository.</p>
+<h3 id="already-created-the-github-repository-first">Already created the GitHub repository first?</h3>
+<details class="question">
+<summary>I created the repo on GitHub with a README (or .gitignore/license) and now <code>git push</code> is rejected</summary>
+<p>The remote has a commit your local repository doesn't know about. If you haven't done anything in the GitHub repo
+yet, the simplest fix is to delete it and create it again <em>empty</em>. Otherwise, merge the two histories once and keep
+the template's versions of any conflicting files:</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>pull<span class="w"> </span>origin<span class="w"> </span>main<span class="w"> </span>--allow-unrelated-histories
+<span class="c1"># resolve any conflicts (e.g. README.md, .gitignore), then:</span>
+git<span class="w"> </span>add<span class="w"> </span>.
+git<span class="w"> </span>commit
+git<span class="w"> </span>push<span class="w"> </span>-u<span class="w"> </span>origin<span class="w"> </span>main
+</code></pre></div>
+</details>
+<details class="question">
+<summary>I already cloned the GitHub repo and want to fill it with the template</summary>
+<p>Run cookiecutter from the folder <em>containing</em> the clone, give <code>repo_name</code> exactly the same name as the cloned folder,
+and pass <code>-f</code> (<code>--overwrite-if-exists</code>) so cookiecutter writes into the existing folder instead of failing:</p>
+<div class="highlight"><pre><span></span><code>cookiecutter<span class="w"> </span>-f<span class="w"> </span>https://github.com/yahei-DTU/project-template
+<span class="nb">cd</span><span class="w"> </span>my-ml-project
+git<span class="w"> </span>add<span class="w"> </span>.
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Add project template&quot;</span>
+git<span class="w"> </span>push
+</code></pre></div>
+<p>Files with the same name, such as a README created by GitHub, are overwritten by the template's version.</p>
+</details>
 <h2 id="how-templates-work">How Templates Work</h2>
 <p>A cookiecutter template is a repository with two key components:</p>
 <p><strong>1. <code>cookiecutter.json</code></strong> — defines the variables and their defaults:</p>
@@ -985,8 +1229,12 @@ uv<span class="w"> </span>sync
 </code></pre></div>
 </li>
 <li>
-<p>Add a new package to the project — for example, sklearn:</p>
-<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>add<span class="w"> </span>sklearn
+<p>Put the project under version control and push it to a new, empty GitHub repository, following
+    <a href="#starting-a-new-project-and-repository">Starting a New Project and Repository</a>.</p>
+</li>
+<li>
+<p>Add a new package to the project — for example, scikit-learn:</p>
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>add<span class="w"> </span>scikit-learn
 </code></pre></div>
 </li>
 <li>
@@ -995,7 +1243,14 @@ uv<span class="w"> </span>sync
 </code></pre></div>
 </li>
 <li>
-<p>Open <code>pyproject.toml</code> and confirm that <code>sklearn</code> now appears in the <code>dependencies</code> list.</p>
+<p>Open <code>pyproject.toml</code> and confirm that <code>scikit-learn</code> now appears in the <code>dependencies</code> list.</p>
+</li>
+<li>
+<p>Commit the change and push it to GitHub:</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>pyproject.toml<span class="w"> </span>uv.lock
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Add scikit-learn&quot;</span>
+git<span class="w"> </span>push
+</code></pre></div>
 </li>
 </ol>
 </div>
